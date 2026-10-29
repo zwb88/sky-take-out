@@ -1,0 +1,42 @@
+# ---------- Maven ----------
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# ---------- IDEA / Eclipse ----------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.classpath
+.project
+.settings/
+.vscode/
+
+# ---------- 编译产物 ----------
+*.class
+*.jar
+!mvnw
+
+# ---------- 日志 ----------
+logs/
+*.log
+
+# ---------- 敏感配置（一定要忽略）----------
+application-dev.yml
+application-local.yml
+application-prod.yml
+*.pem
+*.key
+*.p12
+.env
+
+# ---------- 上传 / 临时 ----------
+upload/
+temp/
+*.tmp
+
+# ---------- 系统 ----------
+.DS_Store
+Thumbs.db
+desktop.ini

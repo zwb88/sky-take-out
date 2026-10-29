@@ -1,0 +1,29 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: sky_take_out
+    username: root
+    password: YOUR_DB_PASSWORD
+
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: YOUR_ACCESS_KEY_ID
+    access-key-secret: YOUR_ACCESS_KEY_SECRET
+    bucket-name: YOUR_BUCKET_NAME
+
+  redis:
+    host: localhost
+    port: 6379
+    password: ""
+    database: 0
+
+  wechat:
+    appid: YOUR_WECHAT_APPID
+    secret: YOUR_WECHAT_SECRET
+
+# 说明：
+# 1. 本文件是模板，不要改名后提交。
+# 2. 复制一份为 application-dev.yml（同目录），填真实值；该文件已被 .gitignore 忽略。
+# 3. 提交前执行 `git status`，确认 application-dev.yml 没有出现在待提交列表里。
