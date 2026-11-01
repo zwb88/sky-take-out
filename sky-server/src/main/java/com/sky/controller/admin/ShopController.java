@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class ShopController {
 
-    public final static String KEY = "SHOP_STATUS";
+    public static final String KEY = "SHOP_STATUS";
     private static final int STATUS_OPEN = 1;
     private static final int STATUS_CLOSED = 0;
     @Autowired
@@ -26,8 +26,8 @@ public class ShopController {
      */
     @PutMapping("/{status}")
     @ApiOperation("设置店铺营业状态")
-    public Result setStauts( @PathVariable Integer status){
-        log.info("设置店铺营业状态：{}", status == 1 ? "营业中":"打样中");
+    public Result setStatus( @PathVariable Integer status){
+        log.info("设置店铺营业状态：{}", status == 1 ? "营业中":"打烊中");
         redisTemplate.opsForValue().set(KEY,status);
         return Result.success();
     }
@@ -45,7 +45,7 @@ public class ShopController {
             status = STATUS_OPEN;         //默认营业
             redisTemplate.opsForValue().set(KEY,status);
         }
-        log.info("设置店铺营业状态：{}", status == 1 ? "营业中":"打烊中");
+        log.info("获取店铺营业状态：{}", status == 1 ? "营业中":"打烊中");
         return Result.success(status);
     }
 
