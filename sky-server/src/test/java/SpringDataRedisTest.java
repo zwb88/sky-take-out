@@ -2,7 +2,6 @@ package com.sky;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.*;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 //@SpringBootTest
 @Slf4j
-public class SpringDateRedisTest {
+public class SpringDataRedisTest {
 
     @Autowired
     private RedisTemplate redisTemplate;

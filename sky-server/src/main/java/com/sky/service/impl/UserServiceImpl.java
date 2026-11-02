@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UserSviceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session";
    @Autowired
