@@ -3,6 +3,7 @@ package com.sky.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sky.constant.MessageConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.UserLoginDTO;
 import com.sky.entity.User;
 import com.sky.exception.LoginFailedException;
@@ -12,6 +13,7 @@ import com.sky.service.UserService;
 import com.sky.utils.HttpClientUtil;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session";
    @Autowired
    private WeChatProperties weChatProperties;
   @Autowired
-   private UserMapper userServiceMapper;
+   private UserMapper userMapper;
+
+
 
     /**
      * 微信登陆
@@ -49,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 
         //判断是否为新用户
-       User user =  userServiceMapper.getById(openid);
+       User user =  userMapper.getByOpenId(openid);
       if(user == null){
 
           user = User.builder()
@@ -58,9 +63,11 @@ public class UserServiceImpl implements UserService {
                   .build();
 
 
-          userServiceMapper.insert(user);
+          userMapper.insert(user);
 
       }
+
+
 
       //返回用户
       return user;
@@ -80,4 +87,16 @@ public class UserServiceImpl implements UserService {
 
         return openid;
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }
