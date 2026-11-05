@@ -95,6 +95,13 @@ public class  ShoppingCartImpl implements ShoppingCartService {
 
     }
 
+    /**
+     * 删除购物车
+     */
+    public void cleanShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.delectById(userId);
 
+    }
 
 }

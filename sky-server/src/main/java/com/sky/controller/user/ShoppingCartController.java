@@ -43,6 +43,13 @@ public class ShoppingCartController {
     }
 
 
+    @DeleteMapping("clean")
+    @ApiOperation("删除购物车")
+    public Result clean(){
 
+        log.info("删除购物车");
+        shoppingCartService.cleanShoppingCart();
+        return Result.success();
+    }
 
 }

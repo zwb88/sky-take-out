@@ -22,5 +22,8 @@ public interface ShoppingCartService {
      */
     List<ShoppingCart> showShoppingCart();
 
-
+    /**
+     * 删除购物车
+     */
+    void cleanShoppingCart();
 }
