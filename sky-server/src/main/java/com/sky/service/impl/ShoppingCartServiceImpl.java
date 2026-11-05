@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @Service
-public class  ShoppingCartImpl implements ShoppingCartService {
+public class  ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     private ShoppingCartMapper shoppingCartMapper;
@@ -88,7 +88,7 @@ public class  ShoppingCartImpl implements ShoppingCartService {
 
         Long userId = BaseContext.getCurrentId();
         ShoppingCart shoppingCart = ShoppingCart.builder()
-                .id(userId)
+                .userId(userId)
                 .build();
         List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
         return list;
