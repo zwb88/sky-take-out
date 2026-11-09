@@ -43,7 +43,7 @@ public class ShoppingCartController {
     }
 
 
-    @DeleteMapping("clean")
+    @DeleteMapping("/clean")
     @ApiOperation("删除购物车")
     public Result clean(){
 

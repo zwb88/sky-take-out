@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         if (addressBook == null){
             throw new AddressBookBusinessException(MessageConstant.ADDRESS_BOOK_IS_NULL);
         }
-       if (!userId.equals(addressBook.getUserId())) {      // ← 新增：归属校验
+       if (!userId.equals(addressBook.getUserId())) {      // 归属校验
         throw new AddressBookBusinessException("地址簿不属于当前用户");
     }
 
@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Orders.PENDING_PAYMENT);
         order.setPayStatus(Orders.UN_PAID);
         order.setOrderTime(LocalDateTime.now());
-        BigDecimal amount = shoppingCarts.stream()                          // ← 新增：服务端算钱
+        BigDecimal amount = shoppingCarts.stream()                          // 服务端算钱
             .map(c -> c.getAmount().multiply(BigDecimal.valueOf(c.getNumber())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setAmount(amount);
