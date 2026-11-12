@@ -1,5 +1,6 @@
 package com.sky;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.DataType;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 //@SpringBootTest
 @Slf4j
+@Disabled("学习用示例测试，未加载Spring容器，依赖本地Redis环境，默认不参与构建")
 public class SpringDataRedisTest {
 
     @Autowired

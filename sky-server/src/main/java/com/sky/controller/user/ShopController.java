@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ShopController {
 
     public final static String KEY = "SHOP_STATUS";
+    private static final int STATUS_OPEN = 1;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -28,7 +29,11 @@ public class ShopController {
     @ApiOperation("用户获取店铺营业状态")
     public Result<Integer> getStatus(){
         Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
-        log.info("设置店铺营业状态：{}", status == 1 ? "营业中":"打烊中");
+        if (status == null) {
+            status = STATUS_OPEN;         //默认营业，与管理端保持一致
+            redisTemplate.opsForValue().set(KEY, status);
+        }
+        log.info("获取店铺营业状态：{}", status == 1 ? "营业中":"打烊中");
         return Result.success(status);
     }
 
