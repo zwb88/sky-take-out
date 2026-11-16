@@ -15,6 +15,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 @RestController("userDishController")
 @RequestMapping("/user/dish")
@@ -42,19 +44,28 @@ public class DishController {
 
        //查询缓存是否含有菜品，有直接返回
        List<DishVO> list = (List<DishVO>) redisTemplate.opsForValue().get(key);
-       if (list != null && list.size()!=0){
+       //只判断null，不判断大小，解决缓存穿透
+       if (list != null){
            return Result.success(list);
        }
-// TODO 改造点①：list.size()!=0 → 空结果不缓存，会穿透
+
 // TODO 改造点②：set(key,list) 没有 TTL，数据永久驻留
        //查询起售中的菜品
        Dish dish = new Dish();
        dish.setCategoryId(categoryId);
        dish.setStatus(StatusConstant.ENABLE);
 
+       //生成随机数
+       int random = ThreadLocalRandom.current().nextInt(300);
+       //设置缓存的TTL
+       int ttl = 1800 + random;
        //没有缓存,查数据库并添加进缓存
        list = dishService.listWithFlavor(dish);
-       redisTemplate.opsForValue().set(key,list);
+       if (list == null || list.isEmpty()){
+           redisTemplate.opsForValue().set(key,list,30, TimeUnit.SECONDS);
+           return Result.success(list);
+       }
+       redisTemplate.opsForValue().set(key,list,ttl,TimeUnit.SECONDS);
        return Result.success(list);
 
 

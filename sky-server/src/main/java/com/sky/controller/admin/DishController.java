@@ -12,9 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -143,13 +146,37 @@ public class DishController {
      * 清理缓存数据
      * @param pattern
      */
-    private void cleanCache(String pattern){
-        Set keys = redisTemplate.keys(pattern);
-        redisTemplate.delete(keys);
-// TODO 改造点③：keys 命令 O(N) 阻塞单线程，生产应改 scan
+    // keys 命令 O(N) 阻塞单线程，生产应改 scan
+    private void cleanCache(String pattern) {
+
+        // 1. 准备一个集合，用来收集扫到的 key
+        Set<String> keys = new HashSet<>();
+
+        // 2. 构造扫描参数：匹配什么模式、每批取多少
+        ScanOptions options = ScanOptions.scanOptions()
+                .match(pattern)     // "dish_*"
+                .count(100)         // 每批 100 个
+                .build();
+
+        // 3. try-with-resources：cursor 用完自动关闭
+        try (Cursor<String> cursor = redisTemplate.scan(options)) {
+
+            // 4. 游标循环：还有下一个吗？
+            while (cursor.hasNext()) {
+                keys.add(cursor.next());   // 有，取出来放进集合
+            }
+
+        }
+        // 5. 删除收集到的所有 key
+        if (!keys.isEmpty()) {
+            redisTemplate.delete(keys);
+            log.info("清理缓存 {} 条，pattern={}", keys.size(), pattern);
+        }
+    }
+
     }
 
 
 
 
-}
+
