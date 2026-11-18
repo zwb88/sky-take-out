@@ -48,8 +48,6 @@ public class DishController {
        if (list != null){
            return Result.success(list);
        }
-
-// TODO 改造点②：set(key,list) 没有 TTL，数据永久驻留
        //查询起售中的菜品
        Dish dish = new Dish();
        dish.setCategoryId(categoryId);
@@ -62,7 +60,7 @@ public class DishController {
        //没有缓存,查数据库并添加进缓存
        list = dishService.listWithFlavor(dish);
        if (list == null || list.isEmpty()){
-           redisTemplate.opsForValue().set(key,list,30, TimeUnit.SECONDS);
+         redisTemplate.opsForValue().set(key,list,30, TimeUnit.SECONDS);
            return Result.success(list);
        }
        redisTemplate.opsForValue().set(key,list,ttl,TimeUnit.SECONDS);
